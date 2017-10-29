@@ -9,8 +9,11 @@ Flock::Flock() {
     }
 }
 
-void Flock::runFlock(Color color) {
-    for (int i = 0 ; i < flockSize ; i ++) {
-        boids[i].run(color, boids);
+void Flock::runFlock() {
+    tbb::task_group boidTask;
+
+    for (auto &boid : boids) {
+        boidTask.run([&] {boid.run(boids);});
     }
+    boidTask.wait();
 }

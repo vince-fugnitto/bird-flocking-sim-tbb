@@ -25,15 +25,13 @@ public:
 
     Boid(Vector loc, float speed, float force);
 
-    void run(Color color, std::vector<Boid> boids);
+    void run(std::vector<Boid> boids);
 
     void flock(std::vector<Boid> boids);
 
     void update();
 
     Vector steer(Vector target, bool slowdown);
-
-    void render(Color color);
 
     void borders();
 

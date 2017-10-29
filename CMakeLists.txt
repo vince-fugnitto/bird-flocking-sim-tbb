@@ -4,7 +4,7 @@ project(Boids_)
 # Set Global Variables
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES main.cpp Boid.cpp Boid.h Flock.cpp Flock.h Scene.cpp Scene.h Common.h Vector.cpp Vector.h SceneController.cpp SceneController.h)
+set(SOURCE_FILES main.cpp Boid.cpp Boid.h Flock.cpp Flock.h Scene.cpp Scene.h Common.h Vector.cpp Vector.h)
 add_executable(Boids_ ${SOURCE_FILES})
 
 # OpenGL Import

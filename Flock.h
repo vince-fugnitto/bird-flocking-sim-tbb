@@ -5,17 +5,14 @@
 #include <vector>
 #include "Boid.h"
 #include "Common.h"
-#include "tbb/task_group.h"
-#include <tbb/parallel_for.h>
+#include <tbb/task_group.h>
 
 class Flock {
 public:
     Color color;
     std::vector<Boid> boids;
-
     Flock();
-
-    void runFlock(Color color);
+    void runFlock();
 };
 
 #endif //BOIDS_FLOCK_H

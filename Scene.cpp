@@ -1,9 +1,49 @@
 #include "Scene.h"
 
+float const pi = 3.14159;
+
+std::vector<Flock> Scene::initializeFlock() {
+
+    // flock container
+    std::vector<Flock> flockList;
+
+    // create flocks
+    Flock a = Flock();
+    a.color = yellow;
+
+    Flock b = Flock();
+    b.color = blue;
+
+    Flock c = Flock();
+    c.color = purple;
+
+    Flock d = Flock();
+    d.color = pink;
+
+    Flock e = Flock();
+    e.color = green;
+
+    Flock f = Flock();
+    f.color = red;
+
+    Flock g = Flock();
+    g.color = white;
+
+    // add all flocks
+    flockList.push_back(a);
+    flockList.push_back(b);
+    flockList.push_back(c);
+    flockList.push_back(d);
+    flockList.push_back(e);
+    flockList.push_back(f);
+    flockList.push_back(g);
+
+    return flockList;
+}
+
 void Scene::executeScene() {
 
     GLFWwindow *window;
-    SceneController controller;
 
     if (!glfwInit())
         exit(EXIT_FAILURE);
@@ -22,7 +62,7 @@ void Scene::executeScene() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    std::vector<Flock> flockList = controller.initializeFlock();
+    std::vector<Flock> flockList = initializeFlock();
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -37,14 +77,19 @@ void Scene::executeScene() {
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(windowColor.r, windowColor.g, windowColor.b, windowColor.a);
 
-        // controller.runScene(flockList);
-        flockList[0].runFlock(flockList[0].color);
-        flockList[1].runFlock(flockList[1].color);
-        flockList[2].runFlock(flockList[2].color);
-        flockList[3].runFlock(flockList[3].color);
-        flockList[4].runFlock(flockList[4].color);
-        flockList[5].runFlock(flockList[5].color);
-        flockList[6].runFlock(flockList[6].color);
+        // create flocking task
+        tbb::task_group flockTask;
+        for (auto &flock : flockList) {
+            flockTask.run([&] {flock.runFlock();});
+        }
+
+        // synchronize all flocks
+        flockTask.wait();
+
+        // render flocks to screen
+        for (auto &flock : flockList) {
+            renderFlock(flock);
+        }
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -54,4 +99,35 @@ void Scene::executeScene() {
     glfwTerminate();
     exit(EXIT_SUCCESS);
 }
+
+float toRadians(float degrees) {
+    return (float)(degrees * (pi / 180.0));
+}
+
+void Scene::render(Boid boid, Color color) {
+
+    float radians = boid.velocity.heading() + toRadians(270);
+    float degrees = (radians * (180 / pi));
+
+    glPushMatrix();
+    glTranslatef(boid.location.x, boid.location.y, 0);
+    glRotatef (degrees, 0.0, 0.0, 1.0);
+    glTranslatef(-boid.location.x, -boid.location.y, 0);
+
+    glBegin(GL_TRIANGLES);
+    glColor4f(color.r, color.g, color.b, color.a);
+    glVertex2f(boid.location.x, boid.location.y + 5.5f);
+    glVertex2f(boid.location.x + 2.5f, boid.location.y - 5.5f);
+    glVertex2f(boid.location.x - 2.5f, boid.location.y - 5.5f);
+    glEnd();
+
+    glPopMatrix();
+}
+
+void Scene::renderFlock(Flock flock) {
+    for (auto &boid : flock.boids) {
+        render(boid, flock.color);
+    }
+}
+
 

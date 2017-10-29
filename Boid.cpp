@@ -24,10 +24,6 @@ float Boid::randomFloat() {
     return dist(mt);
 }
 
-float toRadians(float degrees) {
-    return (float)(degrees * (pi / 180.0));
-}
-
 Boid::Boid() {}
 
 Boid::Boid(Vector loc, float speed, float force) {
@@ -39,13 +35,10 @@ Boid::Boid(Vector loc, float speed, float force) {
     maxForce = force;
 }
 
-
-
-void Boid::run(Color color, std::vector<Boid> boids) {
+void Boid::run(std::vector<Boid> boids) {
     flock(boids);
     update();
     borders();
-    render(color);
 }
 
 void Boid::flock(std::vector<Boid> boids) {
@@ -97,27 +90,6 @@ Vector Boid::steer(Vector target, bool slowdown) {
     }
     return steer;
 }
-
-void Boid::render(Color color) {
-
-    float radians = (velocity.heading() + toRadians(270));
-    float degrees = (radians * (180 / pi));
-
-    glPushMatrix();
-    glTranslatef(location.x, location.y, 0);
-    glRotatef (degrees, 0.0, 0.0, 1.0);
-    glTranslatef(-location.x, -location.y, 0);
-
-    glBegin(GL_TRIANGLES);
-    glColor4f(color.r, color.g, color.b, color.a);
-    glVertex2f(location.x, location.y + 5.5f);
-    glVertex2f(location.x + 2.5f, location.y - 5.5f);
-    glVertex2f(location.x - 2.5f, location.y - 5.5f);
-    glEnd();
-
-    glPopMatrix();
-}
-
 
 void Boid::borders() {
     if (location.x < -r) location.x = width + r;
