@@ -3,6 +3,7 @@
 void Scene::executeScene() {
 
     GLFWwindow *window;
+    SceneController controller;
 
     if (!glfwInit())
         exit(EXIT_FAILURE);
@@ -21,26 +22,7 @@ void Scene::executeScene() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    Flock a = Flock();
-    a.color = yellow;
-
-    Flock b = Flock();
-    b.color = blue;
-
-    Flock c = Flock();
-    c.color = purple;
-
-    Flock d = Flock();
-    d.color = pink;
-
-    Flock e = Flock();
-    e.color = green;
-
-    Flock f = Flock();
-    f.color = red;
-
-    Flock g = Flock();
-    g.color = white;
+    std::vector<Flock> flockList = controller.initializeFlock();
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -55,13 +37,14 @@ void Scene::executeScene() {
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(windowColor.r, windowColor.g, windowColor.b, windowColor.a);
 
-        a.run(a.color);
-        b.run(b.color);
-        c.run(c.color);
-        d.run(d.color);
-        e.run(e.color);
-        f.run(f.color);
-        g.run(g.color);
+        // controller.runScene(flockList);
+        flockList[0].runFlock(flockList[0].color);
+        flockList[1].runFlock(flockList[1].color);
+        flockList[2].runFlock(flockList[2].color);
+        flockList[3].runFlock(flockList[3].color);
+        flockList[4].runFlock(flockList[4].color);
+        flockList[5].runFlock(flockList[5].color);
+        flockList[6].runFlock(flockList[6].color);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -71,3 +54,4 @@ void Scene::executeScene() {
     glfwTerminate();
     exit(EXIT_SUCCESS);
 }
+

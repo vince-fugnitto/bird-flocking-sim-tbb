@@ -3,4 +3,5 @@
 int main() {
     Scene scene;
     scene.executeScene();
+    return 0;
 }

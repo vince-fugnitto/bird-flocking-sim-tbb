@@ -3,9 +3,8 @@
 
 #include <iostream>
 #include <pthread.h>
-#include "Flock.h"
 #include "Common.h"
-#include "tbb/tbb_thread.h"
+#include "SceneController.h"
 
 
 class Scene {

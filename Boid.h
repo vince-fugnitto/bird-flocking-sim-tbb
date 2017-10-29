@@ -4,6 +4,7 @@
 #include <vector>
 #include <random>
 #include <cmath>
+#include <tbb/task_group.h>
 #include "Common.h"
 #include "Vector.h"
 
@@ -19,6 +20,8 @@ public:
     float randomWidthStart();
     float randomHeightStart();
     float randomFloat();
+
+    Boid();
 
     Boid(Vector loc, float speed, float force);
 

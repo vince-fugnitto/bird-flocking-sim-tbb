@@ -2,19 +2,20 @@
 #define BOIDS_FLOCK_H
 
 #include <thread>
+#include <vector>
 #include "Boid.h"
 #include "Common.h"
+#include "tbb/task_group.h"
+#include <tbb/parallel_for.h>
 
 class Flock {
 public:
-    // Class Members
     Color color;
     std::vector<Boid> boids;
 
-    // Class Functions
     Flock();
 
-    void run( Color color);
+    void runFlock(Color color);
 };
 
 #endif //BOIDS_FLOCK_H

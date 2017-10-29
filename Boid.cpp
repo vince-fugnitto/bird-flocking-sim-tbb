@@ -28,6 +28,8 @@ float toRadians(float degrees) {
     return (float)(degrees * (pi / 180.0));
 }
 
+Boid::Boid() {}
+
 Boid::Boid(Vector loc, float speed, float force) {
     acceleration = Vector(0, 0);
     velocity = Vector(randomFloat(), randomFloat());
@@ -47,9 +49,21 @@ void Boid::run(Color color, std::vector<Boid> boids) {
 }
 
 void Boid::flock(std::vector<Boid> boids) {
-    Vector separateVector = separate(boids);
-    Vector alignVector = align(boids);
-    Vector cohereVector = cohesion(boids);
+
+    Vector separateVector;
+    Vector alignVector;
+    Vector cohereVector;
+
+    // apply bird flocking rules in parallel
+    tbb::task_group taskGroup;
+
+    // spawn threads
+    taskGroup.run([&]{separateVector = separate(boids);});
+    taskGroup.run([&]{(alignVector = align(boids));});
+    taskGroup.run([&]{(cohereVector = cohesion(boids));});
+
+    // synchronize threads
+    taskGroup.wait();
 
     separateVector.multiply(2.0f);
     alignVector.multiply(1.0f);
