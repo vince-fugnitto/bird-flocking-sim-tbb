@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.5)
 project(Boids_)
 
 # Set Global Variables
@@ -13,13 +13,12 @@ include_directories(${OPENGL_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} ${OPENGL_INCLUDE_DIRS})
 
 # GLFW Import
-add_subdirectory(glfw)
-include_directories(glfw/include)
 target_link_libraries(${PROJECT_NAME} glfw ${GLFW_LIBRARIES})
 target_link_libraries(${PROJECT_NAME} glfw ${OPENGL_glu_LIBRARY} ${GLFW_LIBRARIES})
 
 # TBB Import
-add_subdirectory(tbb)
-include_directories(tbb/include)
 target_link_libraries(${PROJECT_NAME} tbb)
 
+# GL
+target_link_libraries(${PROJECT_NAME} GL)
+ 
