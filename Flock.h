@@ -7,8 +7,9 @@
 #include "Common.h"
 #include <tbb/task_group.h>
 
-class Flock {
-public:
+class Flock
+{
+  public:
     Color color;
     std::vector<Boid> boids;
     Flock();
