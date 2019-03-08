@@ -2,7 +2,8 @@
 
 float const pi = 3.14159;
 
-std::vector<Flock> Scene::initializeFlock() {
+std::vector<Flock> Scene::initializeFlock()
+{
 
     // flock container
     std::vector<Flock> flockList;
@@ -41,16 +42,20 @@ std::vector<Flock> Scene::initializeFlock() {
     return flockList;
 }
 
-void Scene::executeScene() {
+void Scene::executeScene()
+{
 
     GLFWwindow *window;
 
-    if (!glfwInit())
+    if (glfwInit() == 0)
+    {
         exit(EXIT_FAILURE);
+    }
 
     window = glfwCreateWindow(width, height, "Vincent Fugnitto - Boids!", nullptr, nullptr);
 
-    if (!window) {
+    if (window == nullptr)
+    {
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
@@ -72,22 +77,25 @@ void Scene::executeScene() {
     glfwGetFramebufferSize(window, &width, &height);
     glViewport(0, 0, width, height);
 
-    while (!glfwWindowShouldClose(window)) {
+    while (glfwWindowShouldClose(window) == 0)
+    {
 
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(windowColor.r, windowColor.g, windowColor.b, windowColor.a);
 
         // create flocking task
         tbb::task_group flockTask;
-        for (auto &flock : flockList) {
-            flockTask.run([&] {flock.runFlock();});
+        for (auto &flock : flockList)
+        {
+            flockTask.run([&] { flock.runFlock(); });
         }
 
         // synchronize all flocks
         flockTask.wait();
 
         // render flocks to screen
-        for (auto &flock : flockList) {
+        for (auto &flock : flockList)
+        {
             renderFlock(flock);
         }
 
@@ -100,18 +108,20 @@ void Scene::executeScene() {
     exit(EXIT_SUCCESS);
 }
 
-float toRadians(float degrees) {
-    return (float)(degrees * (pi / 180.0));
+float toRadians(float degrees)
+{
+    return static_cast<float>(degrees * (pi / 180.0));
 }
 
-void Scene::render(Boid boid, Color color) {
+void Scene::render(Boid boid, Color color)
+{
 
     float radians = boid.velocity.heading() + toRadians(270);
     float degrees = (radians * (180 / pi));
 
     glPushMatrix();
     glTranslatef(boid.location.x, boid.location.y, 0);
-    glRotatef (degrees, 0.0, 0.0, 1.0);
+    glRotatef(degrees, 0.0, 0.0, 1.0);
     glTranslatef(-boid.location.x, -boid.location.y, 0);
 
     glBegin(GL_TRIANGLES);
@@ -124,10 +134,10 @@ void Scene::render(Boid boid, Color color) {
     glPopMatrix();
 }
 
-void Scene::renderFlock(Flock flock) {
-    for (auto &boid : flock.boids) {
+void Scene::renderFlock(Flock flock)
+{
+    for (auto &boid : flock.boids)
+    {
         render(boid, flock.color);
     }
 }
-
-

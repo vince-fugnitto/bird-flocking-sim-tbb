@@ -8,8 +8,9 @@
 #include "Common.h"
 #include "Vector.h"
 
-class Boid {
-public:
+class Boid
+{
+  public:
     Vector location;
     Vector velocity;
     Vector acceleration;

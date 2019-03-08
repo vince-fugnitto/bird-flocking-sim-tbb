@@ -4,8 +4,9 @@
 
 #include <cmath>
 
-class Vector {
-public:
+class Vector
+{
+  public:
     float x;
     float y;
     float z;
@@ -37,8 +38,6 @@ public:
     Vector subtract(Vector v1, Vector v2);
 
     float distance(Vector v1, Vector v2);
-
 };
-
 
 #endif //BOIDS_VECTOR3D_H

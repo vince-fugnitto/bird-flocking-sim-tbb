@@ -3,7 +3,8 @@
 
 #include <GLFW/glfw3.h>
 
-typedef struct {
+typedef struct
+{
     GLfloat r, g, b, a;
 } Color;
 

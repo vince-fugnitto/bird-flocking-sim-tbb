@@ -7,9 +7,9 @@
 #include "Common.h"
 #include "Flock.h"
 
-
-class Scene {
-public:
+class Scene
+{
+  public:
     std::vector<Flock> initializeFlock();
     void executeScene();
     void renderFlock(Flock flock);
